@@ -120,31 +120,31 @@ Blue Ocean interface.
 
 Since our pipeline is multibranch, we could build all the branches in the repo independently. To see this in action,
 
-Create a new git branch and name it features/jenkinspipeline-stages
-Add a new build stage "Test"
+   - Create a new git branch and name it features/jenkinspipeline-stages
+   - Add a new build stage "Test"
 
-    pipeline {
-    agent any
-      stages {
-        stage('Build') {
-          steps {
-            script {
-              sh 'echo "Building Stage"'
-            }
-          }
-        }
+            pipeline {
+            agent any
+              stages {
+                stage('Build') {
+                  steps {
+                    script {
+                      sh 'echo "Building Stage"'
+                    }
+                  }
+                }
 
-        stage('Test') {
-          steps {
-            script {
-              sh 'echo "Testing Stage"'
-            }
+              stage('Test') {
+                steps {
+                  script {
+                    sh 'echo "Testing Stage"'
+                  }
+                }
+              }
+              }
           }
-        }
-        }
-    }
     
-To make the new branch show in Jenkins UI, click Administration to exit Blue Ocean, click the project and click Scan Repository Now from the left pane
-Refresh the page and you should see the new branch.
-Open Blue Ocean and you should see the new branch building (or has finished building)
+- To make the new branch show in Jenkins UI, click Administration to exit Blue Ocean, click the project and click Scan Repository Now from the left pane
+- Refresh the page and you should see the new branch.
+- Open Blue Ocean and you should see the new branch building (or has finished building)
 
