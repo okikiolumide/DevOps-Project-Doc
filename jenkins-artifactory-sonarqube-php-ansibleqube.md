@@ -2,7 +2,7 @@
 
 ## Simulating a typical CI/CD Pipeline for a PHP Based application
 
-This project is a continuation of infrastructure development using Ansible and will involve simulating continuous integration and delivery. Therefore the build process will be automated and the builds can be viewed by everyone, testing the quality of the code before deployment uand automate the deployment process in a clone production environment
+This project is a continuation of infrastructure development using Ansible and will involve simulating continuous integration and delivery. Therefore the build process will be automated and the builds can be viewed by everyone, the quality of the code will be tested before deployment and deployment process will be automated into a clone production environment
 
 ![image](https://user-images.githubusercontent.com/30922643/123549349-8f8ac280-d760-11eb-8436-21503760f4d8.png)
 
