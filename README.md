@@ -9,4 +9,4 @@ Compilation of documentations for personal projects in Linux Administration and 
 - Artifactory
 - AWS
 
-* More Tools will be added as soon as project is completed*
+*Note: More Tools will be added as soon as project documentation is committed to repo*
