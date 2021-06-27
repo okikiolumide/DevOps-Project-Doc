@@ -158,3 +158,74 @@ Since our pipeline is multibranch, we could build all the branches in the repo i
      3. Clean up
   5. Verify in Blue Ocean that all the stages are working, then merge your feature branch to the main branch
   6. Eventually, your main branch should have a successful pipeline like this in blue ocean
+
+![more-stage build](https://user-images.githubusercontent.com/30922643/123553407-e5686600-d772-11eb-9d9b-1df24259b8d0.PNG)
+
+### Running Ansible playbook from Jenkins
+- Install Ansible on your Jenkins server
+
+      sudo apt install ansible -y
+- Install Ansible plugin in Jenkins UI
+    - Go to Manage Jenkins
+    - Click Manage Plugins
+    - Click Available tab and in the search bar, enter Ansible and click the check box next to the plugin
+    - Scroll down and click 'Install without restart'
+    - Create Jenkinsfile from scratch (delete all the current stages in the file)
+    
+- Ensure that Ansible runs against the Dev environment successfully. Add a new stage to clone the GitHub repo
+
+        stage('Clone repo') {
+          steps {
+            git(branch: 'feature/jenkinspipeline', url: 'https://github.com/okikiolumide/ansible-config-mgt.git')
+          }
+        }
+This step will clone the repo from the feature/jenkinspipeline branch.
+
+*Remember that ansible.cfg must be exported to environment variable so that Ansible knows where to find
+Roles. But because you will possibly run Jenkins from different git branches, the location of Ansible roles
+will change. Therefore, you must handle this dynamically. You can use Linux Stream Editor sed to update
+the section roles_path each time there is an execution. You may not have this issue if you run only from the
+main branch.*
+
+- Add another stage to edit /etc/ansible/ansible.cfg file
+ 
+        stage('Update ansible.cfg') {
+        steps {
+          sh ('sudo sed -i -e "/roles_path = \\/[a-z]*\\/*/a\\roles_path = $cpath" -e "/roles_path = \\/[a-z]*\\/*/d" /etc/ansible/ansible.cfg')
+        }
+      }
+
+*Possible errors to watch out for:*
+*1. Ensure that the git module in Jenkinsfile is checking out SCM to main branch instead of master (GitHub
+has discontinued the use of Master due to Black Lives Matter. You can read more here)*
+*2. Jenkins needs to export the ANSIBLE_CONFIG environment variable. You can put the .ansible.cfg file
+alongside Jenkinsfile in the deploy directory. This way, anyone can easily identify that everything in
+there relates to deployment. Then, using the Pipeline Syntax tool in Ansible, generate the syntax to create
+environment variables to set*
+
+- Add jenkins user to the sudoers file with permissions to use the sudo command without password when running playbooks.
+    
+    Run `sudo visudo` and add the following line
+        
+        jenkins ALL=(ALL) NOPASSWD: ALL
+
+- Run the playbook by adding this stage
+
+        stage('Run playbook') {
+          steps {
+            ansiblePlaybook(credentialsId: 'awsprivatekey', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory/${inventory}', playbook: 'playbooks/site.yml', tags: '${tag}')
+          }
+        }
+*Note: Remember to Add the Jenkins-Ansible instance private key to Jenkins credentials* 
+
+- Add a stage to cleanup the workspace after every build whether the build failed, was successful or aborted etc
+
+        stage('Clean up') {
+          steps {
+            cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenUnstable: true, deleteDirs: true)
+          }
+        }
+        
+        
+
+
