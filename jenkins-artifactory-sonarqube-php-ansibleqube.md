@@ -148,3 +148,13 @@ Since our pipeline is multibranch, we could build all the branches in the repo i
 - Refresh the page and you should see the new branch.
 - Open Blue Ocean and you should see the new branch building (or has finished building)
 
+     **Quick task**
+  1. Create a pull request to merge the latest code into the `main branch`
+  2. After merging the `PR`, go back into your terminal and switch into the `main` branch.
+  3. Pull the latest change.
+  4. Create a new branch, add more stages into the Jenkins file to simulate below phases. (Just add an `echo` command like we have in `build` and `test` stages)
+     1. Package 
+     2. Deploy 
+     3. Clean up
+  5. Verify in Blue Ocean that all the stages are working, then merge your feature branch to the main branch
+  6. Eventually, your main branch should have a successful pipeline like this in blue ocean
