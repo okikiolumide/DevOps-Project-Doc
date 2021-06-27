@@ -227,5 +227,7 @@ environment variables to set*
         }
         
         
+- Commit and push the code to repo. This should trigger a build automatically on Jenkins if the Github webhook has been properly configure
 
+![ansible-playbook](https://user-images.githubusercontent.com/30922643/123554021-139b7500-d776-11eb-8001-a6a5090bbef8.png)
 
