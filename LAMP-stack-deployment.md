@@ -6,7 +6,6 @@ Software Development Life Cycle (SDLC) also referred to as the Application Devel
 
 
 
-
 - **Stage 1: Planning phase** - This involves clearly defining the scope and purpose of the application to be developed. It directs the course and provisions the team by setting boundaries to effectively create the software, keeping the project from deviating from its original purpose. This stage gives a clearer picture of the scope of the entire project and the anticipated issues, opportunities, and directives which triggered the project.
 - **Stage 2: Defining Requirements** - Defining Requirements helps to determine what the application is supposed to do and its requirements. It also determines the resources needed to build the project. 
 - **Stage 3: System Design** - This describes the transformation of the software requirements into a logical structure. This contains a detailed and complete set of specifications that can be implemented in a programming language.
