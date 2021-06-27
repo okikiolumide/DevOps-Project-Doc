@@ -24,6 +24,7 @@ Ideally, the webservers would be located inside a secured network which cannot b
       sudo apt update
 
       sudo apt install ansible
+      
  ![ansible-install](https://user-images.githubusercontent.com/30922643/113473818-eafc2b80-9463-11eb-8cfc-f9f7d101f78a.JPG)
 ![ansible-install JPG-2](https://user-images.githubusercontent.com/30922643/113473823-efc0df80-9463-11eb-99b7-c0f3ed321480.JPG)
      
