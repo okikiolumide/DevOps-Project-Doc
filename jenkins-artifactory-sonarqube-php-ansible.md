@@ -1,3 +1,4 @@
+
 # Continuous Integration with Jenkins | Ansible | Artifactory | SonarQube | PHP
 
 ## Simulating a typical CI/CD Pipeline for a PHP Based application
@@ -78,13 +79,22 @@ For running ansible playbooks from Jenkins UI instead of manually running ansibl
 
 1. Navigate to Jenkins URL
 2. Install & Open Blue Ocean Jenkins Plugin
+
+![blue-ocean](https://user-images.githubusercontent.com/30922643/123769291-0dfe7600-d8c1-11eb-8437-a0fde44d78a0.PNG)
+
 3. Create a new pipeline
+
+![setting up pipeline](https://user-images.githubusercontent.com/30922643/123769361-266e9080-d8c1-11eb-86cd-559716726bf4.PNG)
+
 4. Select GitHub
 5. Connect Jenkins with GitHub
 6. Login to GitHub & Generate an Access Token
 7. Copy Access Token
 8. Paste the token and connect
-9. Create a new Pipeline
+9. Create a new Pipeline 
+
+![blue-ocean branch](https://user-images.githubusercontent.com/30922643/123769522-4b630380-d8c1-11eb-8392-1f949e841c8c.PNG)
+
 
 *At this point you may not have a Jenkinsfile in the Ansible repository, so Blue Ocean will attempt to give you some
 guidance to create one. But we do not need that. We will rather create one ourselves. So, click on Administration to
@@ -148,7 +158,9 @@ Since our pipeline is multibranch, we could build all the branches in the repo i
 - Refresh the page and you should see the new branch.
 - Open Blue Ocean and you should see the new branch building (or has finished building)
 
-     **Quick task**
+![added test-stage](https://user-images.githubusercontent.com/30922643/123769617-633a8780-d8c1-11eb-9ce0-e9e838119b09.PNG)
+
+**Quick task**
   1. Create a pull request to merge the latest code into the `main branch`
   2. After merging the `PR`, go back into your terminal and switch into the `main` branch.
   3. Pull the latest change.
@@ -226,10 +238,15 @@ environment variables to set*
           }
         }
         
-        
+       
+     ![ansible-playbook](https://user-images.githubusercontent.com/30922643/123768686-739e3280-d8c0-11eb-94f8-7c444928da3a.png)
+![ansible-playbook-pipeline](https://user-images.githubusercontent.com/30922643/123768585-5e290880-d8c0-11eb-847c-8500988a3ce9.png)
+
+       
 - Commit and push the code to repo. This should trigger a build automatically on Jenkins if the Github webhook has been properly configure
 
-![ansible-playbook](https://user-images.githubusercontent.com/30922643/123554021-139b7500-d776-11eb-8001-a6a5090bbef8.png)
+![Uploading ansible-playbook.png…]()
+
 
 ## Parameterizing Jenkinsfile for Ansible Development
 
@@ -264,6 +281,8 @@ case if no value is specified at execution. It also has a description so that ev
           }
         }
 Parameters in the stage can be used to change the inventory environment by changing the hard coded environment from `inventory/dev` to `'inventory/${inventory}'`. From now on, each time the build is executed, it will expect an input. Once the desired environment is entered, hit Run and the configuration will be deployed to the specific environment.
+
+![parameter](https://user-images.githubusercontent.com/30922643/123769154-e60f1280-d8c0-11eb-88ae-26268aec8341.PNG)
 
 
 ## Setting up CI/CD Pipeline for a php TODO Application
@@ -345,7 +364,10 @@ https://github.com/darey-devops/php-todo.git
           steps {
                 sh './vendor/bin/phpunit'
           }
+  
+![prepare depencies](https://user-images.githubusercontent.com/30922643/123770196-fecbf800-d8c1-11eb-809c-c97538574cd8.PNG)
 
+  
 **Phase 3 - Code Quality Analysis**
 For PHP, the most commonly tool used for code quality analysis is phploc. As a DevOps engineer, we assist when it comes to setting up the tools. The data produced by phploc can be ploted onto graphs in Jenkins. 
 *Note: Unit Tests and Code Coverage Analysis is implemented with phpunit and phploc*
@@ -415,6 +437,9 @@ phploc.csv file.
 
 
 The build job used in this step tells Jenkins to start another job. In this case it is the ansible-project job, and we are targeting the main branch. Hence, we have ansible-project/main. Since the Ansible project requires parameters to be passed in, we have included this by specifying the parameters section. The name of the parameter is `env` and its value is `dev`. This means deploy to the Development environment
+
+  ![phploc plots](https://user-images.githubusercontent.com/30922643/123768946-afd19300-d8c0-11eb-9e56-b3ac0699f511.PNG)
+![plot code coverage report](https://user-images.githubusercontent.com/30922643/123768954-b233ed00-d8c0-11eb-8898-b1b3f0d0d091.PNG)
 
 
 ### Step 3: Configure SonarQube
@@ -607,17 +632,26 @@ Paste the configuration below to `systemd`:
         [Install]
         WantedBy=multi-user.target
 
+  ![sonar systemstd](https://user-images.githubusercontent.com/30922643/123770116-e825a100-d8c1-11eb-961a-cf5980efde39.PNG)
+
+  
 - Save the file and Use systemd to manage the service
 
       sudo systemctl start sonar
       sudo systemctl enable sonar
       sudo systemctl status sonar
 
+  ![sonar service](https://user-images.githubusercontent.com/30922643/123770062-da701b80-d8c1-11eb-9b8e-e4ebd12d6f8f.PNG)
+
+  
 **Access SonarQube**
 
 To access SonarQube using browser, type server’s IP address followed by port 9000: `http://server_IP:9000` OR `http://localhost:9000`
 username:admin password:admin
 
+  ![sonar dashboard](https://user-images.githubusercontent.com/30922643/123770035-d0e6b380-d8c1-11eb-8d9d-f27063984931.PNG)
+
+  
 Remember to open the port in the security group for the Sonarqube instance
 
 **Configure SonarQube and Jenkins For Quality Gate**
@@ -696,6 +730,8 @@ Remember to open the port in the security group for the Sonarqube instance
 
 - Run the job again
 
+![sonar gate pipeline](https://user-images.githubusercontent.com/30922643/123769850-9f6de800-d8c1-11eb-8ae0-46d34cb2e62e.PNG)
+![sonar dashboard latest](https://user-images.githubusercontent.com/30922643/123769860-a268d880-d8c1-11eb-9190-0ead26e2345d.PNG)
 
 ### Conditionally deploy to higher environments
 
@@ -734,6 +770,9 @@ The complete stage should look like this:
 
 Test this by creating different branches and push to GitHub to see that only branches other than develop, hotfix, release, main, or master will be able to deploy the code.
 
+  ![sonar gate pipeline 2](https://user-images.githubusercontent.com/30922643/123769827-97ae4380-d8c1-11eb-8670-f5c1062f60e4.PNG)
+
+  
 ### Complete the following tasks to finish the Project
 
 1. Introduce Jenkins agents/slaves - Add 2 more servers to be used as Jenkins slave. Configure Jenkins to run its
