@@ -239,13 +239,11 @@ environment variables to set*
         }
         
        
-     ![ansible-playbook](https://user-images.githubusercontent.com/30922643/123768686-739e3280-d8c0-11eb-94f8-7c444928da3a.png)
-![ansible-playbook-pipeline](https://user-images.githubusercontent.com/30922643/123768585-5e290880-d8c0-11eb-847c-8500988a3ce9.png)
-
-       
 - Commit and push the code to repo. This should trigger a build automatically on Jenkins if the Github webhook has been properly configure
 
-![Uploading ansible-playbook.png…]()
+  ![ansible-playbook](https://user-images.githubusercontent.com/30922643/123768686-739e3280-d8c0-11eb-94f8-7c444928da3a.png)
+![ansible-playbook-pipeline](https://user-images.githubusercontent.com/30922643/123768585-5e290880-d8c0-11eb-847c-8500988a3ce9.png)
+
 
 
 ## Parameterizing Jenkinsfile for Ansible Development
@@ -293,6 +291,9 @@ The goal  is to deploy the application onto servers directly from Artifactory ra
 - Create an Ansible role to install Artifactory (ignore the Nginx part)
 - Run the Ansible role against the Artifactory server
 
+![artifactory-install-az](https://user-images.githubusercontent.com/30922643/123770957-96c9e180-d8c2-11eb-8c83-b4ef4ffba937.PNG)
+
+
 **Phase 1 Prepare Jenkins**
 - Fork the repository below into your GitHub account
 https://github.com/darey-devops/php-todo.git
@@ -310,6 +311,9 @@ https://github.com/darey-devops/php-todo.git
   - Enter the Server ID
   - Enter the URL as: http://<artifactory-server-ip>:8082/artifactory
 
+  ![jfrog-landing](https://user-images.githubusercontent.com/30922643/123770866-89145c00-d8c2-11eb-8191-eaa479779804.PNG)
+
+  
 **Phase 2 - Integrate Artifactory repository with Jenkins**
 - Create a dummy `Jenkinsfile` in the repository
 - Using Blue Ocean, create a multibranch Jenkins pipeline
@@ -318,6 +322,9 @@ https://github.com/darey-devops/php-todo.git
       Create database homestead;
       CREATE USER 'homestead'@'%' IDENTIFIED BY 'sePret^i';
       GRANT ALL PRIVILEGES ON * . * TO 'homestead'@'%';
+
+  
+  ![show homestead tables](https://user-images.githubusercontent.com/30922643/123771792-41da9b00-d8c3-11eb-9422-ab683d0b1d1d.PNG)
 
 - Update the db connection details in the .env.sample file within the todo app 
 - Update `Jenkinsfile` with proper pipeline configuration
@@ -358,6 +365,8 @@ https://github.com/darey-devops/php-todo.git
 • *Composer is used by PHP to install all the dependent libraries used by the application*
 • *php artisan uses the .env file to setup the required database objects - (After successful run of this step, login to the database, run show tables and you will see the tables being created for you)*
 
+  ![prepare depencies](https://user-images.githubusercontent.com/30922643/123770196-fecbf800-d8c1-11eb-809c-c97538574cd8.PNG)
+  
 - Add unit tests to `Jenkinsfile` 
 
       stage('Execute Unit Tests') {
@@ -365,7 +374,8 @@ https://github.com/darey-devops/php-todo.git
                 sh './vendor/bin/phpunit'
           }
   
-![prepare depencies](https://user-images.githubusercontent.com/30922643/123770196-fecbf800-d8c1-11eb-809c-c97538574cd8.PNG)
+![execute unit tests](https://user-images.githubusercontent.com/30922643/123771186-c37df900-d8c2-11eb-8478-aa307dea5c7f.PNG)
+
 
   
 **Phase 3 - Code Quality Analysis**
@@ -463,11 +473,16 @@ Here is a manual approach to installation.
       ulimit -n 65536
       ulimit -u 4096
 
+  ![linux kernel](https://user-images.githubusercontent.com/30922643/123771284-d1337e80-d8c2-11eb-8819-7be1bd7d28eb.PNG)
+
  - To make a permanent change, edit the file /etc/security/limits.conf and append the below
 
       sonarqube   -   nofile   65536
       sonarqube   -   nproc    4096
+  
+![update etc-security](https://user-images.githubusercontent.com/30922643/123771338-db557d00-d8c2-11eb-8f86-ac18135b68d2.PNG)
 
+  
 - Update and upgrade system packages
 
       sudo apt-get update
@@ -490,6 +505,9 @@ Here is a manual approach to installation.
       
       java -version
 
+  ![java version](https://user-images.githubusercontent.com/30922643/123771890-5454d480-d8c3-11eb-8cf5-eaacde89be2c.PNG)
+
+  
 **Install and Setup PostgreSQL 10 Database for SonarQube**
 
 - Add PostgreSQL to repo list
@@ -547,6 +565,9 @@ sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`
 
       cd /tmp && sudo wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-7.9.3.zip
 
+  ![installation files](https://user-images.githubusercontent.com/30922643/123771979-6a629500-d8c3-11eb-8086-aaadb7219292.PNG)
+
+  
 - Unzip the archive to the `/opt directory` and move the extracted setup to `/opt/sonarqube` directory
 
       sudo unzip sonarqube-7.9.3.zip -d /opt
@@ -597,6 +618,9 @@ sudo passwd sonar
 
       tail /opt/sonarqube/logs/sonar.log
 
+  ![sonarqube log](https://user-images.githubusercontent.com/30922643/123771426-ed372000-d8c2-11eb-9839-792cc81fc8e6.PNG)
+
+  
 **Configure SonarQube to run as a systemd service**
 
 Stop the running sonar service
